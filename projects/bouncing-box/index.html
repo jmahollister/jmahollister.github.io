@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Bouncing Box</title>
+	<link rel="icon" href="http://fanaru.com/colors/image/129666-colors-arts-colors.gif" type="image/gif">
+	<script src="jquery.min.js"></script>
+
+<!-- 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+	<!-- BEGIN CSS -->
+	<style>
+		/* TODO 1 */
+		[class="box"] {
+			display: block;
+			position: absolute;
+			width: 70px;
+			height: 70px;
+			top: 100px;
+			left: 0px;
+			background-color: teal;
+			font-size: 300%;
+			text-align: center;
+		}
+		
+		#copy1 {
+			top: 0px;
+			left: 0px;
+		}
+		
+		#copy2 {
+			top: 0px;
+			left: 0px;
+		}
+		
+		#reverseCopy1 {
+			top: 0px;
+			left: 0px;
+		}
+		
+		#reverseCopy2 {
+			top: 0px;
+			left: 0px;
+		}
+		
+		#reverseCopy3 {
+			top: 0px;
+			left: 0px;
+		}
+		
+		#circle1 {
+			top: 0px;
+			left: 0px;
+			background-color: white;
+			border-radius: 50%;
+		}
+		
+		#circle2 {
+			top: 0px;
+			left: 0px;
+			background-color: white;
+			border-radius: 50%;
+		}
+		
+	</style>
+
+</head>
+<body class="board">
+	<!-- HTML for the box -->
+	<div id="target" class="box">?</div>
+	<div id="copy1" class="box">?</div>
+	<div id="copy2" class="box">?</div>
+	<div id="reverseCopy1" class="box">?</div>
+	<div id="reverseCopy2" class="box">?</div>
+	<div id="reverseCopy3" class="box">?</div>
+	<div id="circle1" class="box">?</div>
+	<div id="circle2" class="box">?</div>
+
+	<!-- BEGIN JAVASCRIPT -->
+	<script>
+		(function(){
+			'use strict'
+			/* global &*/
+
+			// Variable declarations
+			var box;
+			var boardWidth;
+			var update;
+			var handleBoxClick;
+			var board;
+
+			// jQuery stuff setup for you
+			box = $('#target');
+			boardWidth = $('.board').width();
+			board = $('.board');
+
+			// TODO 2
+			var position;
+			var points;
+			var speed;
+			var direction = 1;
+			var clicks = 0;
+			var yPosition;
+			var yDirection;
+			var yLimit = 115;
+			var copy1;
+			var copy2;
+			var boardHeight;
+			var reverseCopy1;
+			var reverseCopy2;
+			var reverseCopy3;
+			var circle1;
+			var circle2;
+			
+			position = 0;
+			points = 0;
+			speed = 10;
+			yPosition = 100;
+			yDirection = 1;
+			copy1 = $('#copy1');
+			copy2 = $('#copy2');
+			boardHeight = $(document).height();
+			reverseCopy1 = $('#reverseCopy1');
+			reverseCopy2 = $('#reverseCopy2');
+			reverseCopy3 = $('#reverseCopy3');
+			circle1 = $('#circle1');
+			circle2 = $('#circle2');
+			
+			copy1.hide();
+			copy2.hide();
+			reverseCopy1.hide();
+			reverseCopy2.hide();
+			reverseCopy3.hide();
+			circle1.hide();
+			circle2.hide();
+			box.css('left', position);
+			box.text(points);
+			
+			function update() {
+				// TODO 3 / 6 / 7 / 8
+				var r = Math.floor(Math.random() * 255);
+				var g = Math.floor(Math.random() * 255);
+				var b = Math.floor(Math.random() * 255);
+				var colorRandom = 'rgb(' +r+ "," +g+ "," +b+ ")";
+				box.css("background-color", colorRandom);
+				copy1.css('background-color', colorRandom);
+				copy2.css('background-color', colorRandom);
+				reverseCopy1.css('background-color', colorRandom);
+				reverseCopy2.css('background-color', colorRandom);
+				reverseCopy3.css('background-color', colorRandom);
+				circle1.css('color', colorRandom);
+				circle2.css('color', colorRandom);
+				position = position + (speed * direction);
+				box.text(points);
+				copy1.text(points);
+				copy2.text(points);
+				if(position > boardWidth) {
+					direction = -1;
+					board.css('background-color', colorRandom);
+				} else if(position < 0) {
+					direction = 1;
+					board.css('background-color', colorRandom);
+				}
+				if(clicks >= 3 && clicks < 9) {
+					yPosition = yPosition + (speed * yDirection);
+					if(yPosition >= yLimit) {
+						yDirection = -1;
+					}else if(yPosition <= 100) {
+						yDirection = 1;
+					}
+					box.css('top', yPosition);
+					copy1.css('top', yPosition + 150);
+					copy2.css('top', yPosition - 150);
+				} else if(clicks >= 9) {
+					yPosition = yPosition + (speed *yDirection);
+					if(yPosition >= boardHeight) {
+						yDirection = -1;
+						board.css('background-color', colorRandom);
+					}else if(yPosition <= 0) {
+						yDirection = 1;
+						board.css('background-color', colorRandom);
+					}
+					box.css('top', yPosition);
+					copy1.css('top', yPosition + 150);
+					copy2.css('top', yPosition - 150);
+					reverseCopy1.css('top', yPosition);
+					reverseCopy2.css('top', yPosition + 150);
+					reverseCopy3.css('top', yPosition - 150);
+					circle1.css('top', boardHeight - yPosition);
+					circle2.css('top', boardHeight - yPosition);
+				}
+				if(clicks === 6) {
+					copy1.show();
+				} else if(clicks === 12) {
+					copy2.show();
+				} else if(clicks === 15) {
+					reverseCopy1.show();
+					reverseCopy2.show();
+					reverseCopy3.show();
+				} else if(clicks === 18) {
+					circle1.show();
+					circle2.show();
+				}
+				box.css('left', position);
+				copy1.css('left', position);
+				copy2.css('left', position);
+				reverseCopy1.css('left', boardWidth - position);
+				reverseCopy2.css('left', boardWidth - position);
+				reverseCopy3.css('left', boardWidth - position);
+				circle1.css('left', position);
+				circle2.css('left', boardWidth - position);
+			};
+
+
+			
+			function handleBoxClick() {
+				// TODO 4 / 5
+				var r = Math.floor(Math.random() * 255);
+				var g = Math.floor(Math.random() * 255);
+				var b = Math.floor(Math.random() * 255);
+				var colorRandom = 'rgb(' +r+ "," +g+ "," +b+ ")";
+				clicks++;
+				if(clicks%3 === 0) {
+					speed = speed + 3;
+					yLimit = yLimit + 15;
+				}
+				position = 0;
+				points = points + 1;
+				board.css('background-color', colorRandom);
+				
+			};
+
+
+			//this calls update every 50 milliseconds
+			setInterval(update, 50);
+			// this calls the handle handleBoxClick function every time the box is clicked on
+			box.on('click', handleBoxClick);
+		})();
+	</script>
+</body>
+</html>
