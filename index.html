@@ -69,13 +69,27 @@
             .interests header {
                 font-size: 1.25em;
             }
+            
+            button {
+                color: rgb(255, 255, 255);
+                background-color: rgb(200, 0, 190);
+                border-color: rgb(200, 0, 190);
+                border-radius: 15px;
+            }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script>
             $(document).ready(function(){
-               $('button').click(function(){
+                $('.professional-interests').hide();
+                $('.interest').hide();
+                
+               $('#pro-interests').click(function(){
                    $('.professional-interests').toggle();
                }) ;
+               
+               $('#interests').click(function(){
+                  $('.interest').toggle(); 
+               });
             });
         </script>
     </head>
@@ -100,7 +114,8 @@
                     <p>Student at Mandeville high</p>
                     <section class="interests">
                         <header>Interests</header>
-                        <ul>
+                        <button id="interests">Click me to see my interests</button>
+                        <ul class="interest">
                             <li>Reading</li>
                             <li>Writing</li>
                             <li>Video Games</li>
@@ -112,7 +127,7 @@
                 <div class="content">
                     <header>Professional Interests</header>
                     <section class="interests">
-                        <button>Use me to see my professional interests</button>
+                        <button id="pro-interests">Click me to see my professional interests</button>
                         <ul class="professional-interests">
                             <li>Javascript Programming</li>
                             <li>CSS Styling</li>
